@@ -1,0 +1,26 @@
+.rect{
+    mix-blend-mode: overlay;
+    left: 0px;
+    height: 60px;
+    background: linear-gradient(to bottom,rgba(0, 0, 0, 0.562),rgba(61, 59, 59, 0.747));
+    backdrop-filter: blur(4px);
+    }
+    .oneBlock{
+        position: relative;
+        margin-left: 10%;
+        font-family: Red Hat Text;
+        font-style: normal;
+        font-weight: 300;
+        font-size: 28px;
+        line-height: 60px;
+    }
+    .oneBlock>a{
+        text-decoration: none;
+        color:white;
+        transition: font-size .7s;
+    }
+    .oneBlock>a:hover{
+        font-size: 32px;
+        text-decoration: none;
+        color:white;
+    }

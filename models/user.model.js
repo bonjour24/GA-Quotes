@@ -6,13 +6,11 @@ var userSchema= new mongoose.Schema({
     password:{type:String,required:'This field is required'},
     followers:[mongoose.Schema.Types.ObjectId],
     following:[mongoose.Schema.Types.ObjectId],
-    posts:[postSchema]
+    posts:[{
+        quote:{type:String},
+        date:{type:Date},
+        like:{type:Number}
+    }]
 });
 
-var postSchema= new mongoose.Schema({
-    quote:{type:String},
-    date:{type:Date},
-    like:{type:Number}
-});
-
-exports.User=mongoose.model('User',userSchema);
+module.exports = mongoose.model('User',userSchema);

@@ -1,0 +1,31 @@
+html {
+    height: 100%;
+  }
+  body {
+    min-height: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
+  .wrapper {
+    /* Equal to height of footer */
+    /* But also accounting for potential margin-bottom of last child */
+    margin-bottom: 200px;
+  }
+  .content {
+    padding: 20px;
+  }
+  p{
+      margin-left: 5%;
+      font-size: 20px;
+  }
+  footer {
+      /* text-align: center; */
+      height: 180px;
+    background-color: white;
+    grid-row-start: 2;
+    grid-row-end: 3;
+  }
+  .push {
+    height: 50px;
+  }
+  

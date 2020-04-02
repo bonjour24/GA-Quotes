@@ -1,0 +1,23 @@
+nav{
+z-index: 102;
+position: fixed;
+left: 0px;
+top: 0px;
+
+background: #FFFFFF;
+mix-blend-mode: overlay;
+opacity: 0.8;
+}
+.dropdown-item{
+    mix-blend-mode: normal;
+    opacity: 1;
+}
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+  
+  .sticky + .content {
+    padding-top: 60px;
+  }

@@ -1,0 +1,16 @@
+body{
+    z-index: 102;
+    background-image: url('https://images.unsplash.com/photo-1528297506728-9533d2ac3fa4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.card{
+    z-index: 102;
+    background-image: linear-gradient(to bottom , black, rgba(53, 49, 49, 0.616));
+    text-align: center;
+    opacity: 0.7;
+}
+p,h3{
+    color: white;
+    z-index: 105;;
+}

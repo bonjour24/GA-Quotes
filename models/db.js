@@ -1,8 +1,8 @@
 const mongoose=require('mongoose')
-
-mongoose.connect('mongodb://localhost:27017/gaq',{useNewUrlParser:true}, (err)=>{
+require('dotenv/config')
+mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true}, (err)=>{
     if(!err) console.log('MongoDB connected succesfully')
-    else console.log('error in connecting MongoDB')
+    else console.log(err)
 })
 
-require('./user.model')
+require('./user.model');
