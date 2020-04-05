@@ -9,6 +9,7 @@
     "express": "^4.17.1",
     "express-handlebars": "^3.0.0",
     "mongoose": "^5.3.4",
+    "mongoose-title-case": "^0.1.1",
     "nodemon": "^2.0.2",
     "sweetalert2": "^9.10.7"
   },

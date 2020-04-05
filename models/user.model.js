@@ -7,9 +7,9 @@ var userSchema= new mongoose.Schema({
     followers:[mongoose.Schema.Types.ObjectId],
     following:[mongoose.Schema.Types.ObjectId],
     posts:[{
-        quote:{type:String},
-        date:{type:Date},
-        like:{type:Number}
+        quote:{type:String,default:'HIII QUOTED'},
+        date:{type:Date,default:Date.now()},
+        like:{type:Number,default:0}
     }]
 },{
     writeConcern: {

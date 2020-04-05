@@ -9,7 +9,7 @@ const parse=require('body-parser');
 const route1=require('./api/userController');
 
 //Middleware
-const urlencodedParser = parse.urlencoded({ extended: false });
+const urlencodedParser = parse.urlencoded({ extended: true });
 
 app.use(urlencodedParser)
 app.use(parse.json())

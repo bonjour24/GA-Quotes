@@ -6,7 +6,7 @@ const mongoose=require('mongoose');
 const parse=require('body-parser');
 const User=require('../models/user.model');
 const usey=mongoose.model('User');
-const urlencodedParser = parse.urlencoded({ extended: false });
+const urlencodedParser = parse.urlencoded({ extended: true });
 
 
 router.get('/thanks',(req,res)=>{
@@ -90,22 +90,24 @@ router.get('/post:id',(req,res)=>{
 router.post('/post:id',(req,res)=>{
     User.findById(req.params.id,(err,doc)=>{
         if(!err){
-            console.log(req.body)
-            console.log('Document found '+doc)
             var dt=Date.now()
-            var post=[req.body.quote,dt,0]
-            doc.posts.push(post)
-            console.log('---> '+post)
-            console.log(doc.posts)
-            res.render('profile',{
-                name:doc.name,
-                posts:(Object.keys(doc.posts).length)-1,
-                folr:(Object.keys(doc.followers).length)-1,
-                foli:(Object.keys(doc.following).length)-1,
-                id:doc._id
+            doc.update(doc.posts.push({quote:req.body.quote,date:dt,like:0}),(err)=>{
+                if(!err){
+                    res.render('profile',{
+                        name:doc.name,
+                        posts:(Object.keys(doc.posts).length)-1,
+                        folr:(Object.keys(doc.followers).length)-1,
+                        foli:(Object.keys(doc.following).length)-1,
+                        id:doc._id
+                    })
+                    User.findByIdAndUpdate(req.params.id,doc,(err)=>{
+                        if(err) console.log('User not modified with new post')
+                    })
+                }
+                else console.log('Post not added')
             })
         }
-        else console.log('Error in adding post '+err)
+        else console.log('Error in adding post')
     })
 })
 
@@ -113,17 +115,22 @@ router.get('/',(req,res)=>{
     res.render("home",{
         title:'Home'
     });
+    var user=new User()
+    console.log(user)
 });
 
 function addUser(req,res){
-    var user=new User();
-    var dt= Date.now()
+    var user=new User()
     user.name=req.body.name;
     user.userid=req.body.userid;
     user.password=req.body.password;
-    user.save((err,doc)=>{
+    user.save((err)=>{
         if(!err){
-            res.render('thankYou',{title:"Thank You!",name:req.body.name,layout:null});
+            res.render('thankYou',{
+                title:"Thank You!",
+                name:req.body.name,
+                layout:null
+            });
             console.log('Signup successful');
         }
         else{
