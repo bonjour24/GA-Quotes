@@ -33,3 +33,76 @@
     font-weight:600;
     font-size:30px;
 }
+.button{
+    margin-left: 77%;
+    width: 140px;
+    height: 40px;
+    font-size: 20px;
+    background-color: black;
+    border-radius: 10px;
+    box-shadow: 4px 8px 3px #4e4d4d93;
+    color: white;
+}
+.button:active{
+    transform: translateY(5px);
+    box-shadow: 4px 8px 3px #36363693;
+}
+.button a{
+    color: white;
+}
+.button a:hover{
+    color: white;
+    text-decoration: none;
+}
+.form{
+    font-size: 27px;
+    color: black;
+    vertical-align: auto;
+    margin: auto;
+    border-radius: 14px;
+    background-color: rgb(204, 201, 201);
+    box-shadow: 4px 8px 3px #4e4d4d93;
+    text-align: center;
+    padding: 20px;
+    width: 70%;
+    height: fit-content;
+}
+input.roundedd{
+    border: 1px solid #ccc;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-moz-box-shadow: 2px 2px 3px #666;
+	-webkit-box-shadow: 2px 2px 3px #666;
+	box-shadow: 2px 2px 3px #666;
+	font-size: 20px;
+	padding: 2px 5px;
+	outline: 0;
+    -webkit-appearance: none;
+    vertical-align: middle;
+    width: 50%;
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("http://iconsetc.com/icons-watermarks/simple-black/foundation/foundation_quote/foundation_quote_simple-black_256x256.png");
+}
+input.roundedd:focus{
+    border-color: #339933;
+}
+input.rounded {
+	border: 1px solid #ccc;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-moz-box-shadow: 2px 2px 3px #666;
+	-webkit-box-shadow: 2px 2px 3px #666;
+	box-shadow: 2px 2px 3px #666;
+	font-size: 20px;
+	padding: 2px 5px;
+	outline: 0;
+    -webkit-appearance: none;
+    vertical-align: middle;
+}
+input.rounded:focus {
+	border-color: #339933;
+}

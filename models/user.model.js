@@ -11,6 +11,12 @@ var userSchema= new mongoose.Schema({
         date:{type:Date},
         like:{type:Number}
     }]
+},{
+    writeConcern: {
+      w: 'majority',
+      j: true,
+      wtimeout: 1000
+    }
 });
 
 module.exports = mongoose.model('User',userSchema);

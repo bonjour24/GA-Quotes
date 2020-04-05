@@ -38,15 +38,18 @@
         </div>
       </div>
       <p class="small">or use your email account:</p>
-      <form action="/login" method="POST" id="sign-in-form">      
+      <form action="/login" method="POST" id="sign-in-form">
+        <div style="color: red; font-weight:bold;">
+          {{viewTitle}}
+        </div>    
         <div>
           <input type="text" name="userid" placeholder="User Id" value="{{user.userid}}">
         <div class="form-group">
-          {{user.useridError}}
+          {{uid}}
         </div>
           <input type="password" name="password" placeholder="Password" >
         <div class="form-group">
-          {{user.passwordError}}
+          {{ups}}
         </div>
     </div>
         <p class="forgot-password">Forgot your password?</p>

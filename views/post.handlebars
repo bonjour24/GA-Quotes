@@ -1,44 +1,16 @@
-    {{!-- <body>
-    <form action="/" method="POST">
-        <input type="hidden" name="_id" value="{{user._id}}">
-    <div>
-        <label>Name</label>
-        <input type="text" name="name" placeholder="Name" value="{{user.name}}">
-        <div style="color: red;">
-            {{user.nameError}}
-        </div>
+<link rel="stylesheet" href="css/profile.css">
 
-        <label>Userid</label>
-        <input type="text" name="userid" placeholder="User Id" value="{{user.userid}}">
-        <div style="color: red;">
-            {{user.useridError}}
-        </div>
+<div class="main">
+        {{> header}}
+    <div class="hero-image">
+        <br><br>
+        <form class="form" action="/post{{id}}" method="POST">
+            <label>Quote it {{name}}</label>
+            <input class="roundedd" type="text" name="quote" placeholder="Write here...">
+            <div>
+                <button type="submit" class="button">Post</button>
+            </div>
 
-        <label>Password</label>
-        <input type="password" name="password" placeholder="Password" >
-        <div style="color: red;">
-            {{user.passwordError}}
-        </div>
+        </form>
     </div>
-    <div>
-        <button type="submit">Sign Up</button>
-    </div><br><br><br>
-    </form>
-    <form action="/signin" method="POST">
-    <div>
-        <label>User Id</label>
-        <input type="text" name="userid" placeholder="Userid">
-        <div style="color:red;">
-            {{user.useridError}}
-        </div>
-
-        <label>Password</label>
-        <input type="password" name="password" placeholder="Password">
-        <div style="color:red;">
-            {{user.passwordError}}
-        </div>
-    </div>
-    <div>
-        <button type="submit">Sign In</button>
-    </div>
-    </form> --}}
+</div>

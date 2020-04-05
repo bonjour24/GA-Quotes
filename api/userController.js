@@ -21,7 +21,7 @@ router.post('/signUp',urlencodedParser,(req,res)=>{
         if(obj===null) {
             console.log("In If");
             addUser(req,res);
-            res.render('thankYou',{title:"Thank You!",name:req.body.name,layout:null});
+            //res.render('thankYou',{title:"Thank You!",name:req.body.name,layout:null});
         }
         else {
             console.log("In else");
@@ -40,37 +40,99 @@ router.post('/signUp',urlencodedParser,(req,res)=>{
 //   });
 router.post('/login',urlencodedParser,(req,res)=>{
     User.findOne({userid:req.body.userid},(err,obj)=>{
-        if(obj===null){
-            // res.render('notFound',{title:'Not Found',layout:null});
-            console.log('Not Found!');
-        }
-        else{
-            if(obj.password!==req.body.password)    console.log("Found!");
-            else    console.log("Not Found!");
-        };
+        if(!err){
+            if(req.body.userid=='' | req.body.password==''){
+                if(req.body.userid=='' & req.body.password=='')
+                    res.render('home',{
+                        uid:'This field is required',
+                        ups:'This field is required'
+                    })
+                else{
+                    if(req.body.userid=='') res.render('home',{uid:'This field is required'})
+                    else if(req.body.password=='') res.render('home',{ups:'This field is required'})
+                }
+            }
+            else if(obj==null){
+                res.render('home',{
+                    viewTitle:'User does not exist'
+                })
+            }
+            else if(req.body.password!=obj.password || req.body.password==null){
+                res.render('home',{
+                    viewTitle:'Incorrect Password'
+                })
+            }
+            else if(req.body.password==obj.password){
+                res.render('profile',{
+                    name:obj.name,
+                    posts:(Object.keys(obj.posts).length)-1,
+                    folr:(Object.keys(obj.followers).length)-1,
+                    foli:(Object.keys(obj.following).length)-1,
+                    id:obj._id
+                })
+            }
+        }else console.log('Error in signing in')
     });
 });
 
+router.get('/post:id',(req,res)=>{
+    User.findById(req.params.id,(err,doc)=>{
+        if(!err){
+            res.render('post',{
+                id:req.params.id,
+                name:doc.name
+            })
+        }
+        else console.log(err)
+    })
+})
+
+router.post('/post:id',(req,res)=>{
+    User.findById(req.params.id,(err,doc)=>{
+        if(!err){
+            console.log(req.body)
+            console.log('Document found '+doc)
+            var dt=Date.now()
+            var post=[req.body.quote,dt,0]
+            doc.posts.push(post)
+            console.log('---> '+post)
+            console.log(doc.posts)
+            res.render('profile',{
+                name:doc.name,
+                posts:(Object.keys(doc.posts).length)-1,
+                folr:(Object.keys(doc.followers).length)-1,
+                foli:(Object.keys(doc.following).length)-1,
+                id:doc._id
+            })
+        }
+        else console.log('Error in adding post '+err)
+    })
+})
+
 router.get('/',(req,res)=>{
-    res.render("home",{title:'Home'});
+    res.render("home",{
+        title:'Home'
+    });
 });
 
 function addUser(req,res){
-    let user=new User();
+    var user=new User();
+    var dt= Date.now()
     user.name=req.body.name;
     user.userid=req.body.userid;
     user.password=req.body.password;
-    user.followers=[];
-    user.following=[];
-    user.posts=[];
     user.save((err,doc)=>{
-        if(!err) console.log('Signup successful');
+        if(!err){
+            res.render('thankYou',{title:"Thank You!",name:req.body.name,layout:null});
+            console.log('Signup successful');
+        }
         else{
-            if(err.name=='ValidationError'){
-                handleValidationError(err,req.body);
-                res.render("home",{user: req.body});
-            }
-            else console.log('error in Signing up');
+            // if(err.name=='ValidationError'){
+            //     handleValidationError(err,req.body);
+            //     res.render("home",{user: req.body});
+            // }
+            // else 
+            console.log('error in Signing up -> '+err);
         }
     });
 };
