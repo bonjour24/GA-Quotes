@@ -4,11 +4,12 @@
         {{> header}}
     <div class="hero-image">
         <br><br>
-        <form class="form" action="/post{{id}}" method="POST">
+        <form class="form" method="POST">
             <label>Quote it {{name}}</label>
-            <input class="roundedd" type="text" name="quote" placeholder="Write here...">
+            <input class="roundedd" type="text" name="quote" placeholder="Write here..." value="{{qt}}">
             <div>
-                <button type="submit" class="button">Post</button>
+                <button type="submit" class="button" formaction="/post{{id}}">Post</button>
+                <button type="submit" class="button" formaction="/edit{{id}}/{{pid}}">Save changes</button>
             </div>
 
         </form>

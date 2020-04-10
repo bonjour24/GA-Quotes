@@ -13,7 +13,9 @@
     "nodemon": "^2.0.2",
     "sweetalert2": "^9.10.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "handlebars": "^4.5.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

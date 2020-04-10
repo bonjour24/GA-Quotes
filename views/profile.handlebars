@@ -1,5 +1,5 @@
-
 <link rel="stylesheet" href="css/profile.css">
+<script type='text/javascript' src='js/handlebars-v4.0.5.js'></script>
 
 <div class="main">
     {{> header}}
@@ -9,7 +9,7 @@
 			<a href="/">Log Out</a>
 		</div>
 		<div class="button">
-			<a href="/post{{id}}">Add Quote</a>
+			<a href="/post{{uid}}">Add Quote</a>
 		</div>
 	<div class="row">
 		<div class="col-md-12">
@@ -37,9 +37,21 @@
 					<p>P.S I have no special talent, I'm just passionately curious ;)</p>
 				</div>
 			</div>
-		</div>	
+    	</div>
+	</div>
+	<div>
+		{{#each psts}}
+			<div class="card">
+				<a href="/edit{{this._id}}"><i class="fa fa-pencil"></i> Edit</a>
+				<a href="/delete{{this._id}}"><i class="fa fa-trash"></i> Delete</a>
+				<h5 style="margin-left: 30px;">
+					{{this.quote}}<br>
+				</h5>
+				Likes : {{this.like}}
+				<small>Published at : {{this.date}}</small>
+			</div>
+		{{/each}}
 	</div>
 </div>
 {{> footer}}
 </div>
-

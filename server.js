@@ -14,10 +14,12 @@ const urlencodedParser = parse.urlencoded({ extended: true });
 app.use(urlencodedParser)
 app.use(parse.json())
 
+
 app.engine('handlebars',expbs({
     defaultLayout:'main',
     layoutsDir:path.join(__dirname,'views/layouts')
 }));
+
 var port = process.env.port || 3000;
 app.set('view engine','handlebars');
 app.use(express.static('public'));

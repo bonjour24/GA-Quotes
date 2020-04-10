@@ -8,7 +8,6 @@ const User=require('../models/user.model');
 const usey=mongoose.model('User');
 const urlencodedParser = parse.urlencoded({ extended: true });
 
-
 router.get('/thanks',(req,res)=>{
     res.render('thankYou',{title:'Thank You!',layout:null})
 });
@@ -65,10 +64,11 @@ router.post('/login',urlencodedParser,(req,res)=>{
             else if(req.body.password==obj.password){
                 res.render('profile',{
                     name:obj.name,
-                    posts:(Object.keys(obj.posts).length)-1,
-                    folr:(Object.keys(obj.followers).length)-1,
-                    foli:(Object.keys(obj.following).length)-1,
-                    id:obj._id
+                    posts:obj.posts.length,
+                    folr:obj.followers.length,
+                    foli:obj.following.length,
+                    uid:obj._id,
+                    psts:obj.posts
                 })
             }
         }else console.log('Error in signing in')
@@ -87,6 +87,76 @@ router.get('/post:id',(req,res)=>{
     })
 })
 
+router.get('/edit:id',(req,res)=>{
+    User.findOne({"posts._id":req.params.id}, null,(err, doc)=>{
+        if(!err){
+            var size=doc.posts.length
+            for(var i=0;i<size;i++){
+                if(doc.posts[i]._id==req.params.id){
+                    var post=doc.posts[i].quote
+                }
+            }
+            res.render('post',{
+                id:doc.id,
+                name:doc.name,
+                qt:post,
+                pid:req.params.id
+            })
+        }
+        else console.log(err)
+    });
+})
+
+router.post('/edit:id/:_id',(req,res)=>{
+    User.findById(req.params.id,(err,doc)=>{
+        //doc.updateOne({"posts.id":req.params._id},{$set:{"posts.$.quote":req.body.quote}},(err,result)=>{
+        doc.update(doc.posts.pull({_id:req.params._id}),(err)=>{
+            if(err) console.log('Error in pulling  '+err)
+        })
+        doc.update(doc.posts.push({quote:req.body.quote,date:Date.now(),like:0}),(err)=>{
+            if(!err){
+                res.render('profile',{
+                    name:doc.name,
+                    posts:doc.posts.length,
+                    folr:doc.followers.length,
+                    foli:doc.following.length,
+                    id:doc._id,
+                    psts:doc.posts
+                })
+                User.findByIdAndUpdate(req.params.id,doc,(err)=>{
+                    if(err) console.log('User not modified with edited post')
+                })
+            }
+            else console.log('Post not edited'+err)            
+        })
+    })
+})
+
+router.get('/delete:id',(req,res)=>{
+    User.findOne({"posts._id":req.params.id},null,(err,doc)=>{
+        if(!err){
+            var id=doc._id
+            doc.update(doc.posts.pull({_id:req.params.id}),(err)=>{
+                if(!err){
+                    res.render('profile',{
+                        name:doc.name,
+                        posts:doc.posts.length,
+                        folr:doc.followers.length,
+                        foli:doc.following.length,
+                        id:doc._id,
+                        psts:doc.posts                        
+                    })
+                    User.findByIdAndUpdate(id,doc,(err)=>{
+                        if(err) console.log('User not updated')
+                    })
+                }
+                else console.log('Error in deleting post '+err)
+            })
+        }
+        else console.log('User not found')
+    })
+})
+
 router.post('/post:id',(req,res)=>{
     User.findById(req.params.id,(err,doc)=>{
         if(!err){
@@ -95,10 +165,11 @@ router.post('/post:id',(req,res)=>{
                 if(!err){
                     res.render('profile',{
                         name:doc.name,
-                        posts:(Object.keys(doc.posts).length)-1,
-                        folr:(Object.keys(doc.followers).length)-1,
-                        foli:(Object.keys(doc.following).length)-1,
-                        id:doc._id
+                        posts:doc.posts.length,
+                        folr:doc.followers.length,
+                        foli:doc.following.length,
+                        id:doc._id,
+                        psts:doc.posts
                     })
                     User.findByIdAndUpdate(req.params.id,doc,(err)=>{
                         if(err) console.log('User not modified with new post')
@@ -115,8 +186,6 @@ router.get('/',(req,res)=>{
     res.render("home",{
         title:'Home'
     });
-    var user=new User()
-    console.log(user)
 });
 
 function addUser(req,res){
@@ -171,6 +240,5 @@ function handleValidationError(err,body){
         }
     }
 };
-
 
 module.exports=router;

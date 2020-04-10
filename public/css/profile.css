@@ -106,3 +106,10 @@ input.rounded {
 input.rounded:focus {
 	border-color: #339933;
 }
+.card{
+    color: black;
+    background-color:rgb(185, 185, 224);
+    text-align:left;
+    padding: 20px;
+    border-radius: 3px;
+}
