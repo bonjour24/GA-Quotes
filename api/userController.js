@@ -29,14 +29,6 @@ router.post('/signUp',urlencodedParser,(req,res)=>{
     });
 });
 
-// User.find({}, function(err, users) {
-//     var userMap = {};
-
-//     users.forEach(function(user) {
-//       userMap[user._id] = user;
-//     });
-//     console.log(userMap)  ;
-//   });
 router.post('/login',urlencodedParser,(req,res)=>{
     User.findOne({userid:req.body.userid},(err,obj)=>{
         if(!err){
@@ -75,6 +67,24 @@ router.post('/login',urlencodedParser,(req,res)=>{
     });
 });
 
+router.get('/search:id',(req,res)=>{
+    User.findById(req.params.id,(err,doc)=>{
+        User.find({name:{$regex:req.query.name}},{ _id:0,__v:0 },(err,data)=>{
+            if(!err){
+                res.render('profile',{
+                    sear:data,
+                    name:doc.name,
+                    posts:doc.posts.length,
+                    folr:doc.followers.length,
+                    foli:doc.following.length,
+                    uid:doc._id,
+                    psts:doc.posts
+                })
+            }else console.log('No such name '+err)
+        })
+    })
+})
+
 router.get('/post:id',(req,res)=>{
     User.findById(req.params.id,(err,doc)=>{
         if(!err){
@@ -111,7 +121,7 @@ router.post('/edit:id/:_id',(req,res)=>{
     User.findById(req.params.id,(err,doc)=>{
         //doc.updateOne({"posts.id":req.params._id},{$set:{"posts.$.quote":req.body.quote}},(err,result)=>{
         doc.update(doc.posts.pull({_id:req.params._id}),(err)=>{
-            if(err) console.log('Error in pulling  '+err)
+            if(err) console.log('Error in pulling '+err)
         })
         doc.update(doc.posts.push({quote:req.body.quote,date:Date.now(),like:0}),(err)=>{
             if(!err){

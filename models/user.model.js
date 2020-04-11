@@ -7,7 +7,7 @@ var userSchema= new mongoose.Schema({
     followers:[mongoose.Schema.Types.ObjectId],
     following:[mongoose.Schema.Types.ObjectId],
     posts:[{
-        quote:{type:String,default:'HIII QUOTED'},
+        quote:{type:String,default:'**GAQ**'},
         date:{type:Date,default:Date.now()},
         like:{type:Number,default:0}
     }]
@@ -18,5 +18,7 @@ var userSchema= new mongoose.Schema({
       wtimeout: 1000
     }
 });
+
+userSchema.index({'name':'text'})
 
 module.exports = mongoose.model('User',userSchema);

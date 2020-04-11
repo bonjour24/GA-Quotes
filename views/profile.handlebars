@@ -1,22 +1,85 @@
 <link rel="stylesheet" href="css/profile.css">
 <script type='text/javascript' src='js/handlebars-v4.0.5.js'></script>
+<script type="text/javascript" src="../public/js/profile.js"></script>
 
 <div class="main">
     {{> header}}
     {{> rect}}
+	<div class="search">
+		<form method="GET" action="/search{{uid}}"><nobr>
+			<input class="rounded sear" type="text" name="name" placeholder="search names..">
+			<button class="button" type="submit"><i class="fas fa-search"></i> Search</button></nobr>
+		</form>
+		<div>
+			{{#each sear}}
+				<button type="button" class="sres" data-toggle="modal" data-target="#staticBackdrop">{{this.name}}</button><br>
+				<!-- Modal -->
+				<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+					<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel">Author Profile</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="bio-info">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="bio-image">
+												<img src="https://image.ibb.co/f5Kehq/bio-image.jpg" alt="image" />
+											</div>			
+										</div>
+									</div>	
+								</div>
+								<div class="col-md-6">
+									<div class="bio-content">
+										<h1>{{this.name}}</h1>
+										<h5>Followers : {{this.followers.length}} &ensp; Followings : {{this.following.length}} &ensp; Posts : {{this.posts.length}}</h5>
+										<h6>I am a fresh web designer and I create custom web designs. I'm skilled at writing well-designed, testable and efficient code using current best practices in Web development. I'm a fast learner, hard worker and team player who is proficient in making creative and innovative web pages.</h6>
+										<p>P.S I have no special talent, I'm just passionately curious ;)</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div>
+						{{#each this.posts}}
+							<div class="card">
+								<div class="quote">
+									{{this.quote}}<br>
+								</div>
+								<div style="text-align: left;">
+									<i class="fas fa-heart"></i> Likes : {{this.like}}<br>
+									<small>Published at : {{this.date}}</small>
+								</div>
+							</div>
+						{{/each}}
+					</div>					
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Follow</button>
+					</div>
+					</div>
+				</div>
+				</div>
+			</div>
+			</div>
+			{{/each}}
     <div class="container portfolio">
-		<div class="button">
-			<a href="/">Log Out</a>
-		</div>
-		<div class="button">
-			<a href="/post{{uid}}">Add Quote</a>
-		</div>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="heading">				
 				<img src="https://image.ibb.co/cbCMvA/logo.png" />
 			</div>
 		</div>	
+	</div>
+	<div>
+		<a class="button" href="/"><i class="fa fa-sign-out"></i> Log Out</a>
+		<a class="button" href="/post{{uid}}"><i class="fa fa-plus"></i> Add Quote</a>
 	</div>
 	<div class="bio-info">
 		<div class="row">
@@ -42,16 +105,22 @@
 	<div>
 		{{#each psts}}
 			<div class="card">
-				<a href="/edit{{this._id}}"><i class="fa fa-pencil"></i> Edit</a>
-				<a href="/delete{{this._id}}"><i class="fa fa-trash"></i> Delete</a>
-				<h5 style="margin-left: 30px;">
+				<div>
+				<nobr>
+					<a class="edel" href="/delete{{this._id}}"><i class="fa fa-trash"></i> Delete</a>
+					<a class="edel" href="/edit{{this._id}}"><i class="fa fa-pencil"></i> Edit</a>
+				</nobr>
+				</div>
+				<div class="quote">
 					{{this.quote}}<br>
-				</h5>
-				Likes : {{this.like}}
-				<small>Published at : {{this.date}}</small>
+				</div>
+				<div style="text-align: left;">
+					<i class="fas fa-heart"></i> Likes : {{this.like}}<br>
+					<small>Published at : {{this.date}}</small>
+				</div>
 			</div>
 		{{/each}}
 	</div>
 </div>
-{{> footer}}
+{{!-- {{> footer}} --}}
 </div>
