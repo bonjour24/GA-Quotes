@@ -6,6 +6,7 @@ const mongoose=require('mongoose');
 const parse=require('body-parser');
 const User=require('../models/user.model');
 const usey=mongoose.model('User');
+const window=require('window')
 const urlencodedParser = parse.urlencoded({ extended: true });
 
 router.get('/thanks',(req,res)=>{
@@ -69,19 +70,60 @@ router.post('/login',urlencodedParser,(req,res)=>{
 
 router.get('/search:id',(req,res)=>{
     User.findById(req.params.id,(err,doc)=>{
-        User.find({name:{$regex:req.query.name}},{ _id:0,__v:0 },(err,data)=>{
-            if(!err){
-                res.render('profile',{
-                    sear:data,
-                    name:doc.name,
-                    posts:doc.posts.length,
-                    folr:doc.followers.length,
-                    foli:doc.following.length,
-                    uid:doc._id,
-                    psts:doc.posts
-                })
-            }else console.log('No such name '+err)
-        })
+        if(req.query.name!=''){
+            User.find({name:{$regex:req.query.name}},{__v:0 },(err,data)=>{
+                if(!err){
+                    res.render('profile',{
+                        sear:data,
+                        name:doc.name,
+                        posts:doc.posts.length,
+                        folr:doc.followers.length,
+                        foli:doc.following.length,
+                        uid:doc._id,
+                        psts:doc.posts
+                    })
+                }else console.log('No such name '+err)
+            })
+        }
+        else{
+            res.render('profile',{
+                sear:'No authors found',
+                name:doc.name,
+                posts:doc.posts.length,
+                folr:doc.followers.length,
+                foli:doc.following.length,
+                uid:doc._id,
+                psts:doc.posts
+            })
+        }
+    })
+})
+
+router.get('/sprofile:id',(req,res)=>{
+    User.findById(req.params.id,(err,doc)=>{
+        if(!err){
+            res.render('sprofile',{
+                sear:doc
+            })
+        }
+    })
+})
+
+router.get('/like:id',(req,res)=>{
+    User.findOne({"posts._id":req.params.id},null,(err,doc)=>{
+        if(!err){
+            var size=doc.posts.length
+            for(var i=0;i<size;i++){
+                if(doc.posts[i]._id==req.params.id)
+                    doc.posts[i].like+=1;
+            }
+            User.findOneAndUpdate({"posts._id":req.params.id},doc,(err)=>{
+                if(!err){
+                    console.log('Post liked')
+                    res.redirect('back')
+                }
+            })
+        }
     })
 })
 
