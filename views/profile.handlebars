@@ -12,7 +12,7 @@
 		</form>
 		<div class="sres">
 			{{#each sear}}
-				<a class="sres" href="/sprofile{{this._id}}">{{this.name}}</a>
+				<a class="sres" href="/sprofile{{this._id}}/{{../uid}}">{{this.name}}</a>
 			{{/each}}
 		</div>
 	</div>
@@ -41,8 +41,8 @@
 				</div>
 				<div class="col-md-6">
 					<div class="bio-content">
-						<h1>{{name}}</h1>
-						<h5>Followers : {{folr}} &ensp; Followings : {{foli}} &ensp; Posts : {{posts}}</h5>
+						<h1>{{user.name}}</h1>
+						<h5>Followers : {{user.followers.length}} &ensp; Followings : {{user.following.length}} &ensp; Posts : {{user.posts.length}}</h5>
 						<h6>I am a fresh web designer and I create custom web designs. I'm skilled at writing well-designed, testable and efficient code using current best practices in Web development. I'm a fast learner, hard worker and team player who is proficient in making creative and innovative web pages.</h6>
 						<p>P.S I have no special talent, I'm just passionately curious ;)</p>
 					</div>
@@ -51,7 +51,7 @@
 		</div>
     </div>
 	<div>
-		{{#each psts}}
+		{{#each user.posts}}
 			<div class="card">
 				<div>
 					<nobr>
