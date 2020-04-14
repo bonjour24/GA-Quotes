@@ -1,4 +1,9 @@
-<link rel="stylesheet" href="css/profile.css">
+<link rel="stylesheet" href="/css/profile.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/nav.css">
+<link rel="stylesheet" href="/css/extraBlock.css">
+<link rel="stylesheet" href="/css/footer.css">
+
 <script type='text/javascript' src='js/handlebars-v4.0.5.js'></script>
 
 <div class="main">
@@ -7,12 +12,17 @@
     <div class="container portfolio">
 		<div class="row">
             <div style="margin-left:70%;">
-                <a class="button" href="/follow{{uid}}/{{sear._id}}"><i class="fas fa-eye"></i> Follow </a>&ensp;
+                {{#if fol}}
+                    {{mes}}<br><a class="button" href="/unfollow{{uid}}/{{sear._id}}"><i class="fas fa-star-half-alt"></i> Unfollow</a>
+                    {{else}}
+                    {{mes}}<br><a class="button" href="/follow{{uid}}/{{sear._id}}"><i class="fas fa-star"></i> Follow </a>&ensp;
+                {{/if}}
 				<a class="button" href="/close{{uid}}"><i class="fas fa-times"></i> Close profile </a>
 			</div>
 			<div class="col-md-12">
 				<div class="heading">				
-					<img src="https://image.ibb.co/cbCMvA/logo.png" />
+					<img src="https://image.ibb.co/cbCMvA/logo.png"/>
+                    <img src="/img/quoteag.png"/>
 				</div>
 			</div>	
 		</div>

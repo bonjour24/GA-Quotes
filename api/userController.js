@@ -90,9 +90,24 @@ router.get('/search:id',(req,res)=>{
 router.get('/sprofile:id/:_id',(req,res)=>{
     User.findById(req.params.id,(err,doc)=>{
         if(!err){
-            res.render('sprofile',{
-                sear:doc,
-                uid:req.params._id
+            User.findOne({_id:req.params.id, followers: mongoose.Types.ObjectId(req.params._id)},(err,dec)=>{
+                if(!err){
+                    if(dec){
+                        res.render('sprofile',{
+                            sear:doc,
+                            uid:req.params._id,
+                            fol:true
+                        })
+                    }
+                    else{
+                        res.render('sprofile',{
+                            sear:doc,
+                            uid:req.params._id,
+                            fol:false
+                        })
+                    }
+                }
+                else console.log('Doc not found : '+err)
             })
         }
     })
@@ -114,21 +129,72 @@ router.get('/follow:id/:_id',(req,res)=>{
         if(!err){
             User.findById(req.params._id,(err,doc)=>{
                 if(!err){
-                    doc.update(doc.followers.push(udoc._id))
-                    udoc.update(udoc.following.push(doc._id))
-                    User.findByIdAndUpdate(req.params.id,udoc,(err)=>{
-                        if(!err){
-                            User.findByIdAndUpdate(req.params._id,doc,(err)=>{
-                                if(!err) 
-                                    res.render('sprofile',{
-                                        sear:doc,
-                                        uid:udoc._id
+                    User.findOne({_id:doc._id,followers:mongoose.Types.ObjectId(udoc._id)},(err,dec)=>{
+                        if(dec==null){
+                            doc.update(doc.followers.push(udoc._id))
+                            udoc.update(udoc.following.push(doc._id))
+                            User.findByIdAndUpdate(req.params.id,udoc,(err)=>{
+                                if(!err){
+                                    User.findByIdAndUpdate(req.params._id,doc,(err)=>{
+                                        if(!err) 
+                                            res.render('sprofile',{
+                                                sear:doc,
+                                                uid:udoc._id,
+                                                fol:true
+                                            })
+                                        else console.log('Follower not updated')
                                     })
-                                else console.log('Follower not updated')
+                                }else console.log('User not updated')
                             })
-                        }else console.log('User not updated')
+                        }
+                        else{
+                            res.render('sprofile',{
+                                sear:doc,
+                                uid:udoc._id,
+                                fol:true,
+                                mes:'Already following'
+                            })
+                        }
                     })
                 }else console.log('Follower not found')
+            })
+        }else console.log('User not found')
+    })
+})
+
+router.get('/unfollow:id/:_id',(req,res)=>{
+    User.findById(req.params.id,(err,udoc)=>{
+        if(!err){
+            User.findById(req.params._id,(err,doc)=>{
+                if(!err){
+                    User.findOne({_id:udoc._id, following: mongoose.Types.ObjectId(doc._id)},(err,dec)=>{
+                        if(dec){
+                            doc.update(doc.followers.pull(udoc._id))
+                            udoc.update(udoc.following.pull(doc._id))
+                            User.findByIdAndUpdate(req.params.id,udoc,(err)=>{
+                                if(!err){
+                                    User.findByIdAndUpdate(req.params._id,doc,(err)=>{
+                                        if(!err){
+                                            res.render('sprofile',{
+                                                sear:doc,
+                                                uid:udoc._id,
+                                                fol:false
+                                            })
+                                        }
+                                        else console.log('Unfollower not updated')
+                                    })
+                                }else console.log('User not updated')
+                            })
+                        }
+                        else{
+                            res.render('sprofile',{
+                                sear:doc,
+                                uid:udoc._id,
+                                fol:false,
+                                mes:'Not following'
+                            })}
+                    })
+                }else console.log('Unfollower not found')
             })
         }else console.log('User not found')
     })
@@ -174,7 +240,7 @@ router.get('/edit:id',(req,res)=>{
                 }
             }
             res.render('post',{
-                id:doc.id,
+                id:doc._id,
                 name:doc.name,
                 qt:post,
                 pid:req.params.id

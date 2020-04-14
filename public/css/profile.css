@@ -48,6 +48,7 @@
     background-color: white;
     color: black;
     font-weight: bold;
+    cursor: url('img/featherpng');
 }
 .button:active{
     transform: translateY(5px);
@@ -99,7 +100,8 @@ input.roundedd{
     height: 100px;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url("http://iconsetc.com/icons-watermarks/simple-black/foundation/foundation_quote/foundation_quote_simple-black_256x256.png");
+    /* background-image: url("https://www.freelogodesign.org/file/app/client/thumb/39a24fb0-472d-40db-8751-dd3fe3bf2eb3_200x200.png?1586833373551"); */
+    background-image: url('../img/featherh.png');
 }
 input.roundedd:focus{
     border-color: #339933;

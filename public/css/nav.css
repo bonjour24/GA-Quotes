@@ -8,6 +8,9 @@ background: #FFFFFF;
 mix-blend-mode: overlay;
 opacity: 0.8;
 }
+.navbar{
+  padding: 0px 0px 0px 20px;
+}
 .dropdown-item{
     mix-blend-mode: normal;
     opacity: 1;

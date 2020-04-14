@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="css/profile.css">
+<link rel="stylesheet" href="/css/profile.css">
 
 <div class="main">
         {{> header}}
@@ -8,10 +8,11 @@
             <label>Quote it {{name}}</label>
             <input class="roundedd" type="text" name="quote" placeholder="Write here..." value="{{qt}}">
             <div>
-                <button type="submit" class="button" formaction="/post{{id}}">Post</button>
+                <button id="feather" type="submit" class="button" formaction="/post{{id}}">Post</button>
                 <button type="submit" class="button" formaction="/edit{{id}}/{{pid}}">Save changes</button>
             </div>
 
         </form>
     </div>
+    {{> footer}}
 </div>
