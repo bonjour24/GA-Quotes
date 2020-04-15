@@ -55,9 +55,17 @@ router.post('/login',urlencodedParser,(req,res)=>{
                 })
             }
             else if(req.body.password==obj.password){
-                res.render('profile',{
-                    user:obj,
-                    uid:obj._id
+                User.find({_id:obj.followers},'name',(err,folo)=>{
+                    if(!err){
+                        User.find({_id:obj.following},'name',(err,foli)=>{
+                            res.render('profile',{
+                                user:obj,
+                                uid:obj._id,
+                                folo:folo,
+                                foli:foli
+                            })
+                        })
+                    }
                 })
             }
         }else console.log('Error in signing in')
@@ -69,19 +77,38 @@ router.get('/search:id',(req,res)=>{
         if(req.query.name!=''){
             User.find({name:{$regex:req.query.name}},{__v:0 },(err,data)=>{
                 if(!err){
-                    res.render('profile',{
-                        sear:data,
-                        user:doc,
-                        uid:doc._id,
+                    var s;
+                    if(data.length==0) s=1; else s=0;
+                    User.find({_id:doc.followers},'name',(err,folo)=>{
+                        if(!err){
+                            User.find({_id:doc.following},'name',(err,foli)=>{
+                                res.render('profile',{
+                                    user:doc,
+                                    uid:doc._id,
+                                    folo:folo,
+                                    foli:foli,
+                                    se:s,
+                                    sear:data
+                                })
+                            })
+                        }
                     })
                 }else console.log('No such name '+err)
             })
         }
         else{
-            res.render('profile',{
-                sear:'No authors found',
-                user:doc,
-                uid:doc._id
+            User.find({_id:doc.followers},'name',(err,folo)=>{
+                if(!err){
+                    User.find({_id:doc.following},'name',(err,foli)=>{
+                        res.render('profile',{
+                            user:doc,
+                            uid:doc._id,
+                            folo:folo,
+                            foli:foli,
+                            se:1
+                        })
+                    })
+                }
             })
         }
     })
@@ -116,9 +143,17 @@ router.get('/sprofile:id/:_id',(req,res)=>{
 router.get('/close:id',(req,res)=>{
     User.findById(req.params.id,(err,doc)=>{
         if(!err){
-            res.render('profile',{
-                user:doc,
-                uid:doc._id
+            User.find({_id:doc.followers},'name',(err,folo)=>{
+                if(!err){
+                    User.find({_id:doc.following},'name',(err,foli)=>{
+                        res.render('profile',{
+                            user:doc,
+                            uid:doc._id,
+                            folo:folo,
+                            foli:foli,
+                        })
+                    })
+                }
             })
         }
     })
@@ -200,18 +235,28 @@ router.get('/unfollow:id/:_id',(req,res)=>{
     })
 })
 
-router.get('/like:id',(req,res)=>{
+router.get('/like:id/:uid',(req,res)=>{
     User.findOne({"posts._id":req.params.id},null,(err,doc)=>{
         if(!err){
-            var size=doc.posts.length
-            for(var i=0;i<size;i++){
-                if(doc.posts[i]._id==req.params.id)
-                    doc.posts[i].like+=1;
-            }
-            User.findOneAndUpdate({"posts._id":req.params.id},doc,(err)=>{
+            User.findById(req.params.uid,(err,udoc)=>{
                 if(!err){
-                    console.log('Post liked')
-                    res.redirect('back')
+                    User.find({"posts.like":udoc._id},(err,dec)=>{
+                        if(!err){
+                            if(dec==null | dec.length==0){
+                                var size=doc.posts.length
+                                for(var i=0;i<size;i++){
+                                    if(doc.posts[i]._id==req.params.id)
+                                        doc.posts[i].like.push(udoc._id);
+                                }
+                                User.findOneAndUpdate({"posts._id":req.params.id},doc,(err)=>{
+                                    if(!err){
+                                        console.log('Post liked')
+                                        res.redirect('back')
+                                    }
+                                })
+                            }res.redirect('back')
+                        }
+                    })
                 }
             })
         }
@@ -223,7 +268,8 @@ router.get('/post:id',(req,res)=>{
         if(!err){
             res.render('post',{
                 id:req.params.id,
-                name:doc.name
+                name:doc.name,
+                butt:1  //Post
             })
         }
         else console.log(err)
@@ -243,7 +289,8 @@ router.get('/edit:id',(req,res)=>{
                 id:doc._id,
                 name:doc.name,
                 qt:post,
-                pid:req.params.id
+                pid:req.params.id,
+                butt:0 //Save edits
             })
         }
         else console.log(err)
@@ -260,9 +307,17 @@ router.post('/edit:id/:_id',(req,res)=>{
             if(!err){
                 User.findByIdAndUpdate(req.params.id,doc,(err)=>{
                     if(!err){
-                        res.render('profile',{
-                            user:doc,
-                            uid:doc._id
+                        User.find({_id:doc.followers},'name',(err,folo)=>{
+                            if(!err){
+                                User.find({_id:doc.following},'name',(err,foli)=>{
+                                    res.render('profile',{
+                                        user:doc,
+                                        uid:doc._id,
+                                        folo:folo,
+                                        foli:foli,
+                                    })
+                                })
+                            }
                         })
                     }
                     else console.log('User not modified with edited post')
@@ -279,9 +334,17 @@ router.get('/delete:id',(req,res)=>{
             var id=doc._id
             doc.update(doc.posts.pull({_id:req.params.id}),(err)=>{
                 if(!err){
-                    res.render('profile',{
-                        user:doc,
-                        uid:doc._id                                          
+                    User.find({_id:doc.followers},'name',(err,folo)=>{
+                        if(!err){
+                            User.find({_id:doc.following},'name',(err,foli)=>{
+                                res.render('profile',{
+                                    user:doc,
+                                    uid:doc._id,
+                                    folo:folo,
+                                    foli:foli,
+                                })
+                            })
+                        }
                     })
                     User.findByIdAndUpdate(id,doc,(err)=>{
                         if(err) console.log('User not updated')
@@ -300,9 +363,17 @@ router.post('/post:id',(req,res)=>{
             var dt=Date.now()
             doc.update(doc.posts.push({quote:req.body.quote,date:dt,like:0}),(err)=>{
                 if(!err){
-                    res.render('profile',{
-                        user:doc,
-                        uid:doc._id
+                    User.find({_id:doc.followers},'name',(err,folo)=>{
+                        if(!err){
+                            User.find({_id:doc.following},'name',(err,foli)=>{
+                                res.render('profile',{
+                                    user:doc,
+                                    uid:doc._id,
+                                    folo:folo,
+                                    foli:foli,
+                                })
+                            })
+                        }
                     })
                     User.findByIdAndUpdate(req.params.id,doc,(err)=>{
                         if(err) console.log('User not modified with new post')

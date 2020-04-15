@@ -1,15 +1,18 @@
 <link rel="stylesheet" href="/css/profile.css">
 
 <div class="main">
-        {{> header}}
+    {{> header}}
     <div class="hero-image">
         <br><br>
         <form class="form" method="POST">
             <label>Quote it {{name}}</label>
             <input class="roundedd" type="text" name="quote" placeholder="Write here..." value="{{qt}}">
             <div>
-                <button id="feather" type="submit" class="button" formaction="/post{{id}}">Post</button>
-                <button type="submit" class="button" formaction="/edit{{id}}/{{pid}}">Save changes</button>
+                {{#if butt}}
+                    <button type="submit" class="button" formaction="/post{{id}}"><i class="fas fa-check"></i> Post</button>
+                    {{else}}
+                    <button type="submit" class="button" formaction="/edit{{id}}/{{pid}}"><i class="fas fa-check-circle"></i> Save edits</button>
+                {{/if}}
             </div>
 
         </form>

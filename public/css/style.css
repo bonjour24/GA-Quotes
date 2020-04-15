@@ -4,7 +4,7 @@ body {
     background-image: url("https://www.freelogodesign.org/file/app/client/thumb/ece79c34-59f0-4ff4-a8ee-571ec05e0c45_200x200.png?1586833655818");*/
     height: 1000px;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: repeat-y;
     background-size: cover;
     position: relative;
   }
