@@ -140,6 +140,16 @@ input.rounded:focus {
     padding: 30px;
     border-radius: 5px;
 }
+a.cardd{
+    float: left;
+    color: black;
+    font-size: 20px;
+}
+a.cardd:hover{
+    color: rgb(0, 28, 46);
+    text-decoration: none;
+    font-weight: bold;
+}
 .edel{
     background-color: rgb(206, 241, 171);
     border-radius: 5px;

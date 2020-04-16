@@ -1,0 +1,16 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="/public/css/profile.css">
+
+{{!---------------Search Div-------------}}
+<div class="search">
+    <form method="GET" action="/sear{{uid}}"><nobr>
+        <input class="rounded sear" type="text" name="name" placeholder="search names..">
+        <button class="button" type="submit"><i class="fas fa-search"></i> Search</button></nobr>
+    </form>
+    <div class="sres">
+        {{#each sear}}
+            <a class="sres" href="/sprofile{{this._id}}/{{../uid}}">{{this.name}}</a>
+        {{/each}}
+        {{#if se}}<p class="sres">No authors found</p>{{/if}}
+    </div>
+</div>

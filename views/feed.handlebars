@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="/css/profile.css">
+<link rel="stylesheet" href="/css/style.css">
+
+<script type='text/javascript' src='js/handlebars-v4.0.5.js'></script>
+
+<div class="main">
+    {{> header}}
+    {{> rect}}
+    {{> search}}
+    <div class="container portfolio">
+		<div class="row">
+			<div style="margin-left:53%;">
+				<a class="button" href="/"><i class="fa fa-sign-out"></i> Log Out</a>
+				<a class="button" href="/post{{uid}}"><i class="fa fa-plus"></i> Add Quote</a>
+                <a style="" class="button" href="/profile{{uid}}"><i class="fa fa-user"></i> Profile</a>
+			</div>
+			<div class="col-md-12">
+				<div class="heading">				
+					<img src="https://image.ibb.co/cbCMvA/logo.png" />
+                    <img src="/img/quoteag.png"/>
+				</div>
+			</div>	
+		</div>
+
+		<div class="bio-info">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="bio-content">
+						<h1>{{user.name}}</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+    {{!-------------------------Followers Posts---------------------------}}
+	<div>
+		{{#each fposts}}
+		{{#each this.posts}}
+			<div class="card">
+                <div>
+                   <a class="cardd" href="/sprofile{{../this._id}}/{{../../uid}}">{{../this.userid}}</a>
+                </div>
+				<div class="quote">
+					{{this.quote}}<br>
+				</div>
+				<div style="text-align: left;">
+					<a href="/like{{this._id}}/{{../uid}}"><i class="fas fa-heart heart"></i></a> Likes : {{this.like.length}}<br>
+					<small>Published at : {{this.date}}</small>
+				</div>
+			</div>
+		{{/each}}
+		{{/each}}
+	</div>
+	{{> footer}}
+</div>

@@ -72,6 +72,25 @@ router.post('/login',urlencodedParser,(req,res)=>{
     });
 });
 
+router.get('/profile:id',(req,res)=>{
+    User.findById(req.params.id,(err,doc)=>{
+        if(!err){
+            User.find({_id:doc.followers},'name',(err,folo)=>{
+                if(!err){
+                    User.find({_id:doc.following},'name',(err,foli)=>{
+                        res.render('profile',{
+                            user:doc,
+                            uid:doc._id,
+                            folo:folo,
+                            foli:foli
+                        })
+                    })
+                }
+            })
+        }
+    })
+})
+
 router.get('/search:id',(req,res)=>{
     User.findById(req.params.id,(err,doc)=>{
         if(req.query.name!=''){
@@ -254,7 +273,7 @@ router.get('/like:id/:uid',(req,res)=>{
                                         res.redirect('back')
                                     }
                                 })
-                            }res.redirect('back')
+                            }else res.redirect('back')
                         }
                     })
                 }
@@ -383,6 +402,49 @@ router.post('/post:id',(req,res)=>{
             })
         }
         else console.log('Error in adding post')
+    })
+})
+
+router.get('/feed:id',(req,res)=>{
+    User.findById(req.params.id,(err,doc)=>{
+        if(!err){
+            User.find({_id:doc.following},'posts userid').sort({'posts.date':-1}).exec((err,dec)=>{
+            // User.find({_id:doc.following},'posts userid',(err,dec)=>{
+                if(!err){
+                    res.render('feed',{
+                        user:doc,
+                        uid:doc._id,
+                        fposts:dec
+                    })
+                }
+            })
+        }
+    })
+})
+
+router.get('/sear:id',(req,res)=>{
+    User.findById(req.params.id,(err,doc)=>{
+        if(req.query.name!=''){
+            User.find({name:{$regex:req.query.name}},{__v:0 },(err,data)=>{
+                if(!err){
+                    var s;
+                    if(data.length==0) s=1; else s=0;
+                    res.render('feed',{
+                        user:doc,
+                        uid:doc._id,
+                        sear:data,
+                        se:s
+                    })
+                }else console.log('No such name '+err)
+            })
+        }
+        else{
+            res.render('search',{
+                user:doc,
+                uid:doc._id,
+                se:1
+            })      
+        }
     })
 })
 
