@@ -94,7 +94,7 @@ router.get('/profile:id',(req,res)=>{
 router.get('/search:id',(req,res)=>{
     User.findById(req.params.id,(err,doc)=>{
         if(req.query.name!=''){
-            User.find({name:{$regex:req.query.name}},{__v:0 },(err,data)=>{
+            User.find({name:{$regex:req.query.name, $ne:doc.name}},{__v:0 },(err,data)=>{
                 if(!err){
                     var s;
                     if(data.length==0) s=1; else s=0;
@@ -418,32 +418,6 @@ router.get('/feed:id',(req,res)=>{
                     })
                 }
             })
-        }
-    })
-})
-
-router.get('/sear:id',(req,res)=>{
-    User.findById(req.params.id,(err,doc)=>{
-        if(req.query.name!=''){
-            User.find({name:{$regex:req.query.name}},{__v:0 },(err,data)=>{
-                if(!err){
-                    var s;
-                    if(data.length==0) s=1; else s=0;
-                    res.render('feed',{
-                        user:doc,
-                        uid:doc._id,
-                        sear:data,
-                        se:s
-                    })
-                }else console.log('No such name '+err)
-            })
-        }
-        else{
-            res.render('search',{
-                user:doc,
-                uid:doc._id,
-                se:1
-            })      
         }
     })
 })

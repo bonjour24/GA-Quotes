@@ -68,11 +68,11 @@
 								<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
-							<div class="modal-body">
+							<div class="modal-body" style="text-align: center;">
 								<div id="folo" style="display: none;">
 									{{#if user.followers.length}}
 										{{#each folo}}
-											{{this.name}}<br>
+											<a class="ca" href="/sprofile{{this._id}}/{{../uid}}">{{this.name}}</a><br>
 										{{/each}}
 										{{else}} No followers yet
 									{{/if}}
@@ -80,7 +80,7 @@
 								<div id="foli" style="display: none;">
 									{{#if user.following.length}}
 										{{#each foli}}
-											{{this.name}}
+											<a class="ca" href="/sprofile{{this._id}}/{{../uid}}">{{this.name}}</a><br>
 										{{/each}}
 										{{else}} You're not following anyone
 									{{/if}}

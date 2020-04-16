@@ -150,6 +150,12 @@ a.cardd:hover{
     text-decoration: none;
     font-weight: bold;
 }
+a.ca{
+    color: black;
+}
+a.ca:hover{
+    text-decoration: none; color: rgb(23, 6, 39); font-weight: bold;
+}
 .edel{
     background-color: rgb(206, 241, 171);
     border-radius: 5px;
