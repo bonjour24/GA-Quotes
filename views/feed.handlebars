@@ -5,7 +5,6 @@
 
 <div class="main">
     {{> header}}
-    {{> rect}}
     {{> search}}
     <div class="container portfolio">
 		<div class="row">
@@ -44,7 +43,7 @@
 					{{this.quote}}<br>
 				</div>
 				<div style="text-align: left;">
-					<a href="/like{{this._id}}/{{../uid}}"><i class="fas fa-heart heart"></i></a> Likes : {{this.like.length}}<br>
+					<a href="/like{{this._id}}/{{../../uid}}"><i class="fas fa-heart heart"></i></a> Likes : {{this.like.length}}<br>
 					<small>Published at : {{this.date}}</small>
 				</div>
 			</div>

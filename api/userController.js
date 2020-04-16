@@ -259,23 +259,26 @@ router.get('/like:id/:uid',(req,res)=>{
         if(!err){
             User.findById(req.params.uid,(err,udoc)=>{
                 if(!err){
-                    User.find({"posts.like":udoc._id},(err,dec)=>{
-                        if(!err){
-                            if(dec==null | dec.length==0){
-                                var size=doc.posts.length
-                                for(var i=0;i<size;i++){
-                                    if(doc.posts[i]._id==req.params.id)
-                                        doc.posts[i].like.push(udoc._id);
+                    var flag=0;
+                    var sp=doc.posts.length
+                    for(var i=0;i<sp;i++){
+                        if(doc.posts[i]._id==req.params.id){
+                            var sl=doc.posts[i].like.length
+                            for(var y=0;y<sl;y++){
+                                if(doc.posts[i].like[y]==req.params.uid){
+                                    flag=1
                                 }
+                            }
+                            if(flag==0){
+                                doc.posts[i].like.push(udoc._id)
                                 User.findOneAndUpdate({"posts._id":req.params.id},doc,(err)=>{
                                     if(!err){
-                                        console.log('Post liked')
                                         res.redirect('back')
                                     }
                                 })
                             }else res.redirect('back')
                         }
-                    })
+                    }
                 }
             })
         }
@@ -423,10 +426,20 @@ router.get('/feed:id',(req,res)=>{
 })
 
 router.get('/',(req,res)=>{
-    res.render("home",{
-        title:'Home'
-    });
+    User.find({"posts.like":{$size:1}},(err,doc)=>{
+        if(!err){
+            res.render("popular",{
+                title:'Welcome',
+                doc:doc
+            })
+        }
+    })
+    
 });
+
+router.get('/home',(req,res)=>{
+    res.render('home',{title:'Home'})
+})
 
 function addUser(req,res){
     var user=new User()

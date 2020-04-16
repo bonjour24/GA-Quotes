@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="/css/pop.css">
+<link rel="stylesheet" href="/css/profile.css">
+
+<div class="main">
+    {{> header}}
+    {{> rect}}
+    <div class="pop">
+        <h2>ALL POPULAR POSTS</h2>
+        {{#each doc}}
+		{{#each this.posts}}
+        {{#if this.like}}
+			<div class="card">
+                <div>
+                   <a class="cardd" href="/home">{{../this.userid}}</a>
+                </div>
+				<div class="quote">
+					{{this.quote}}<br>
+				</div>
+				<div style="text-align: left;">
+					<a href="/home"><i class="fas fa-heart heart"></i></a> Likes : {{this.like.length}}<br>
+					<small>Published at : {{this.date}}</small>
+				</div>
+			</div>
+        {{/if}}
+		{{/each}}
+		{{/each}}
+    </div>
+    <div>
+        <a class="pop" href="/home">Get Started for FREE</a>
+    </div>
+</div>
